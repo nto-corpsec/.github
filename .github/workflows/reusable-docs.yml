@@ -27,13 +27,24 @@ jobs:
           globs: "**/*.md"
       - name: Local links
         if: ${{ !inputs.check-external-links }}
-        uses: lycheeverse/lychee-action@82202e5e9c2f4ef1a55a3d02563e1cb6041e5332 # v2.4.1
-        with:
-          args: --offline --no-progress --accept 200,206,429 "./**/*.md"
-          fail: true
+        run: |
+          set -euo pipefail
+          curl -sSfL -o /tmp/lychee.tar.gz \
+            "https://github.com/lycheeverse/lychee/releases/download/lychee-v0.18.1/lychee-x86_64-unknown-linux-gnu.tar.gz"
+          tar -xzf /tmp/lychee.tar.gz -C /tmp lychee
+          mapfile -t files < <(git ls-files '*.md')
+          if [ "${#files[@]}" -eq 0 ]; then
+            echo "markdown-файлов нет — проверять нечего"
+            exit 0
+          fi
+          /tmp/lychee --offline --no-progress "${files[@]}"
+
       - name: All links
         if: ${{ inputs.check-external-links }}
-        uses: lycheeverse/lychee-action@82202e5e9c2f4ef1a55a3d02563e1cb6041e5332 # v2.4.1
-        with:
-          args: --no-progress --max-retries 2 --accept 200,206,429 "./**/*.md"
-          fail: true
+        run: |
+          set -euo pipefail
+          curl -sSfL -o /tmp/lychee.tar.gz \
+            "https://github.com/lycheeverse/lychee/releases/download/lychee-v0.18.1/lychee-x86_64-unknown-linux-gnu.tar.gz"
+          tar -xzf /tmp/lychee.tar.gz -C /tmp lychee
+          mapfile -t files < <(git ls-files '*.md')
+          /tmp/lychee --no-progress --max-retries 2 --accept 200,206,429 "${files[@]}"
