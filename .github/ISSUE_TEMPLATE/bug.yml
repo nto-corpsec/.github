@@ -1,0 +1,37 @@
+name: Баг
+description: Что-то работает не так — в инструменте, CI или стенде
+title: "[bug] "
+labels: ["type/fix", "priority/p1"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: Что произошло
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Ожидаемое поведение
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Шаги воспроизведения
+      placeholder: |
+        1. make lab-up
+        2. ...
+      render: shell
+    validations:
+      required: true
+  - type: input
+    id: env
+    attributes:
+      label: Окружение
+      placeholder: "Ubuntu 24.04, Python 3.13, Wazuh 4.14.9"
+  - type: textarea
+    id: logs
+    attributes:
+      label: Логи / скриншоты
+      render: shell

@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Инцидент с секретом
+    url: https://github.com/nto-corpsec/hub/blob/main/runbooks/SECRET-LEAK.md
+    about: Сначала ротация, потом git. Открой runbook.
+  - name: Playbook команды
+    url: https://github.com/nto-corpsec/hub/blob/main/docs/PLAYBOOK.md
+    about: Ежедневный ритм, роли, передача смены

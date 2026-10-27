@@ -1,0 +1,34 @@
+name: Разведка
+description: Находка, гипотеза, наблюдение — без ответов и флагов
+title: "[intel] "
+labels: ["type/intel", "priority/p2"]
+body:
+  - type: textarea
+    id: finding
+    attributes:
+      label: Что нашли
+      description: Факт, источник, степень уверенности
+    validations:
+      required: true
+  - type: textarea
+    id: impact
+    attributes:
+      label: Как это использовать
+    validations:
+      required: true
+  - type: dropdown
+    id: confidence
+    attributes:
+      label: Уверенность
+      options: [подтверждено, вероятно, гипотеза]
+  - type: input
+    id: source
+    attributes:
+      label: Источник
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Безопасность
+      options:
+        - label: Нет флагов, ответов и персональных данных
+          required: true

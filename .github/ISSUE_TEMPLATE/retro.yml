@@ -1,0 +1,26 @@
+name: Ретро
+description: Разбор спринта, этапа или инцидента
+title: "[retro] "
+labels: ["type/report"]
+body:
+  - type: textarea
+    id: facts
+    attributes:
+      label: Факты
+      description: Что произошло, без оценок
+    validations:
+      required: true
+  - type: textarea
+    id: keep
+    attributes:
+      label: Что сработало
+  - type: textarea
+    id: change
+    attributes:
+      label: Что меняем
+      description: Конкретное действие с владельцем и сроком
+  - type: textarea
+    id: actions
+    attributes:
+      label: Действия
+      placeholder: "- [ ] Обновить runbook — @lead — до 20.11"

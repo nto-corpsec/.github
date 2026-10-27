@@ -1,0 +1,44 @@
+name: reusable-no-leak
+
+# Дешёвый, но обязательный гейт: в публичном репозитории не должно быть
+# флагов, ответов и очевидных секретов. Дополняет gitleaks, но без истории.
+
+on:
+  workflow_call:
+    inputs:
+      include-tests:
+        description: Сканировать tests/ (там бывают синтетические флаги)
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  no-leak:
+    name: no-leak
+    runs-on: ubuntu-latest
+    env:
+      INCLUDE_TESTS: ${{ inputs.include-tests }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Scan for flags and obvious secrets
+        run: |
+          set -euo pipefail
+          flags='(flag|ctf|nto|key)\{[^}]{4,}\}'
+          keys='AKIA[0-9A-Z]{16}|ghp_[A-Za-z0-9]{36}|xox[abprs]-[A-Za-z0-9-]{10,}'
+          keys="${keys}|-----BEGIN (RSA |OPENSSH |EC )?PRIVATE KEY-----"
+          pattern="(${flags}|${keys})"
+          excludes=(--exclude-dir=.git --exclude-dir=.venv --exclude-dir=node_modules)
+          if [ "$INCLUDE_TESTS" != "true" ]; then
+            excludes+=(--exclude-dir=tests)
+          fi
+          if grep -rInE "$pattern" . "${excludes[@]}"; then
+            echo "::error::Найдены флаги или секреты. Публичный репозиторий — не место для них."
+            exit 1
+          fi
+          echo "Чисто: флагов и секретов не найдено"

@@ -1,0 +1,55 @@
+name: Задача
+description: "Рабочая задача команды: инструмент, разбор, стенд, документация"
+title: "[task] "
+labels: ["type/feature", "priority/p2"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Заполни кратко. Если задача про флаги или ответы — создавай её в приватном `ops`.
+  - type: dropdown
+    id: role
+    attributes:
+      label: Роль
+      options:
+        - lead
+        - soceng
+        - dfir
+        - netsec
+        - websec
+        - osint
+    validations:
+      required: true
+  - type: textarea
+    id: goal
+    attributes:
+      label: Цель и результат
+      description: Что должно появиться на выходе
+      placeholder: "Скрипт разбора EVTX выдаёт таймлайн в CSV и JSON"
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Контекст
+      description: Ссылки, артефакты, ограничения
+  - type: input
+    id: dod
+    attributes:
+      label: Definition of Done
+      placeholder: "PR с тестами, runbook, зелёный CI"
+    validations:
+      required: true
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Приоритет
+      options: [P0, P1, P2, P3]
+      default: 2
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Безопасность
+      options:
+        - label: В задаче нет флагов, ответов, секретов и персональных данных
+          required: true
